@@ -1,0 +1,14 @@
+{
+    "name": "MarketProfile",
+    "version": "0.0.1",
+    "window": {
+        "width": 1000,
+        "height": 600,
+        "toolbar": true
+    },
+    "main": "ui/index.html",
+    "dependencies": {
+        "ofio": "*",
+        "csv": "*"
+    }
+}
