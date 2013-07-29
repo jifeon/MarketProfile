@@ -8,7 +8,6 @@
     },
     "main": "ui/index.html",
     "dependencies": {
-        "ofio": "*",
         "csv": "*"
     }
 }
