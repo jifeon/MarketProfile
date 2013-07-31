@@ -14,6 +14,8 @@ define(['ofio/ofio', 'jquery', 'ofio/ofio.jquery'], function (Ofio, $) {
 
             this._rows = {};
             this._pipsStep = this._options.pipsStep;
+            this._controlPoints = [];
+            this._maxLength = 0;
         },
 
         /**
@@ -40,11 +42,24 @@ define(['ofio/ofio', 'jquery', 'ofio/ofio.jquery'], function (Ofio, $) {
                     this._rows[priceStr] = [];
                 }
 
-                this._rows[priceStr].push(letter);
+                var l = this._rows[priceStr].push(letter);
+                if (l > this._maxLength) {
+                    this._controlPoints = [price];
+                    this._maxLength = l;
+                }
+                else if (l == this._maxLength) {
+                    this._controlPoints.push(price);
+                }
             }
         },
 
         render: function () {
+            var center = (this._day.min + this._day.max) / 2;
+            console.log(this._controlPoints);
+            var controlPoint = this._controlPoints.reduce(function (a, b) {
+                return Math.abs(center-a) < Math.abs(center-b) ? a : b;
+            }).toFixed(5);
+
             for (var price in this._rows) {
                 if (!this._rows.hasOwnProperty(price)) {
                     continue;
@@ -56,6 +71,9 @@ define(['ofio/ofio', 'jquery', 'ofio/ofio.jquery'], function (Ofio, $) {
                 this._rows[price].forEach(function (letter) {
                     html.push('<span>', letter, '</span>');
                 });
+                if (price == controlPoint) {
+                    $td.addClass('control_point');
+                }
                 $td.html(html.join('')).insertAfter($row.find('th:first'));
             }
         }

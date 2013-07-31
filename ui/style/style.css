@@ -23,3 +23,11 @@ th, td{
 tr:hover {
     background-color: antiquewhite;
 }
+
+.control_point {
+    background-color: #00d4b4;
+}
+
+.value_area {
+    background-color: aquamarine;
+}

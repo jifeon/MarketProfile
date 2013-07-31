@@ -15,9 +15,12 @@ define(['ofio/ofio', 'jquery', 'DayProfile', 'ofio/ofio.jquery'], function (Ofio
             });
 
             this._pipsStep = 0.0002;
+            this._days = 0;
             this._min = null;
             this._max = null;
+            this._startDaysNumber = 1;
             this._$tbody = this.$el.find('tbody');
+            this._$thead = this.$el.find('thead');
             this._parser
                 .on('error', alert)
                 .on('ready', this._build.bind(this));
@@ -30,7 +33,7 @@ define(['ofio/ofio', 'jquery', 'DayProfile', 'ofio/ofio.jquery'], function (Ofio
         },
 
         _build: function () {
-            for(var i = 0; i < 10; i++) this._buildLastDay();
+            for(var i = 0; i < this._startDaysNumber; i++) this._buildLastDay();
         },
 
         _buildLastDay: function () {
@@ -43,6 +46,7 @@ define(['ofio/ofio', 'jquery', 'DayProfile', 'ofio/ofio.jquery'], function (Ofio
                 pipsStep: this._pipsStep
             });
             dayProfile.build();
+            this._days++;
         },
 
         _prepareTableForDay: function (day) {
@@ -54,8 +58,11 @@ define(['ofio/ofio', 'jquery', 'DayProfile', 'ofio/ofio.jquery'], function (Ofio
                 this._max = max;
 
                 this._$tbody.html(this._generatePrices(min, max));
+                this._$thead.html('<tr><th></th><th>' + day.date + '</th></tr>');
             }
             else {
+                this._$thead.find('th:first').after('<th>' + day.date + '</th>');
+
                 if (min < this._min) {
                     this._$tbody.append($(this._generatePrices(min, this._min - this._pipsStep)));
                     this._min = min;
@@ -84,7 +91,11 @@ define(['ofio/ofio', 'jquery', 'DayProfile', 'ofio/ofio.jquery'], function (Ofio
             var html = [];
             for (var price = max; price >= min; price -= this._pipsStep) {
                 var priceStr = price.toFixed(5);
-                html.push('<tr class="tr', priceStr.replace('.', '_'), '"><th>', priceStr, '</th></tr>');
+                html.push('<tr class="tr', priceStr.replace('.', '_'), '"><th>', priceStr, '</th>');
+                var a = [];
+                a.length = this._days + 1;
+                html.push(a.join('<td></td>'));
+                html.push('</tr>');
             }
             return html.join('');
         },

@@ -19,7 +19,7 @@ var MarketProfileDataParser = module.exports = Ofio.extend({
         this._cvs = null;
         this._data = [];
         this._readingFile = true;
-        this._timeRange = [8, 15];
+        this._timeRange = [9, 17];
 
         this._loadCSV();
     },
