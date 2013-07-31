@@ -18,7 +18,7 @@ define(['ofio/ofio', 'jquery', 'DayProfile', 'ofio/ofio.jquery'], function (Ofio
             this._days = 0;
             this._min = null;
             this._max = null;
-            this._startDaysNumber = 1;
+            this._startDaysNumber = 10;
             this._$tbody = this.$el.find('tbody');
             this._$thead = this.$el.find('thead');
             this._parser
